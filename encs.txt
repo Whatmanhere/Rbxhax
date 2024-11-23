@@ -1,0 +1,41 @@
+//
+
+	Created by whatman on 27.10.2024
+
+//
+
+
+Tutorial on how to get encryptions (encs)
+-----------------------------------------
+
+you know how p->code is encrypted
+basically u wanna find some code in the Luau source code that gets p->code
+like for instance here:
+/images/exluauenc.png
+-----------------------------------------------------------
+"const int sizecode readVarint(data, size, offset);
+p->code luak newarray(L, sizecode, Instruction, p->mencat);
+p->sizecode sizecode;
+for (int j p->sizecode; ++j)
+p->code[j] readcuint32 to(data, size, offset);
+p->codeentry->code;"
+------------------------------------------------------------
+After your done find that example in IDA or any dissasembler
+
+which would be this
+/images/rbxsencasm.png
+the image
+--------------------------------------------------------------
+
+and this line of code is p->codeentry = p->code
+{
+*(_QWORD *)(v141 + 32) = (char *)v142 + *v142;
+}
+--------------------------------------------------------------
+so your encryption is member + *member
+so u just repeat this for all the encrypted fields
+---------------------------------------------------------------
+This tutorial is licensed by GNU and created by whatman
+----------------------------------------------------------------
+!WARNING DO NOT SHARE!
+----------------------

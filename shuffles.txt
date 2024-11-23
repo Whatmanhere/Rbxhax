@@ -1,0 +1,83 @@
+// 
+
+	Created by whatman on 27.10.2024
+
+//
+TUTORIAL getting shuffles:3,5,7,8,6,4,9
+
+Shuffles 3, 5, 7, and 8: luaT_typenames and eventname
+luaT_typenames is an internal array that holds Lua type names like "nil", "boolean", "number", and so on.
+eventname holds names for metamethod events, which Lua uses to trigger specific behaviors on tables and objects, such as __index or __call.
+
+To retrieve specific shuffles, you can access them by their index: (ONLY EXAMPLE) - not for roblox il show roblox example later!
+ex:
+""
+local luaT_typenames = { "nil", "boolean", "number", "string", "table", "function", "userdata", "thread" }
+local eventname = { "__index", "__newindex", "__call", "__tostring", "__add", "__sub", "__mul", "__div" }
+
+local shuffle3 = luaT_typenames[3]
+local shuffle5 = luaT_typenames[5]
+local shuffle7 = luaT_typenames[7]
+local shuffle8 = luaT_typenames[8]
+
+local shuffle3_event = eventname[3]
+local shuffle5_event = eventname[5]
+local shuffle7_event = eventname[7]
+local shuffle8_event = eventname[8]
+""
+Shuffle 6: Using Coroutines
+Coroutines can manage when you access certain elements dynamically, making it possible to retrieve shuffle 6 only at a specific time. You create a coroutine to yield until you’re ready to access or modify shuffle 6.
+ex
+""
+function shuffle_with_coroutine(luaT_typenames, eventname)
+    coroutine.yield()
+    local shuffle6 = luaT_typenames[6]
+    local shuffle6_event = eventname[6]
+    print(shuffle6, shuffle6_event)
+end
+
+local co = coroutine.create(function() shuffle_with_coroutine(luaT_typenames, eventname) end)
+coroutine.resume(co)
+coroutine.resume(co)
+""
+Shuffles 4 and 9: Using luavm::load
+The luavm::load function is where you can set up or initialize the shuffles at specific points during the Lua VM’s load phase, which affects the whole runtime. You modify luaT_typenames and eventname within this function to set your shuffled values before the VM is fully active.
+ex:
+""
+function luavm_load()
+    local luaT_typenames = { "nil", "boolean", "number", "string", "table", "function", "userdata", "thread" }
+    local eventname = { "__index", "__newindex", "__call", "__tostring", "__add", "__sub", "__mul", "__div" }
+    
+    luaT_typenames[4], luaT_typenames[9] = "modified_string", "modified_thread"
+    eventname[4], eventname[9] = "__modified_tostring", "__modified_div"
+
+    print(luaT_typenames[4], eventname[4])
+    print(luaT_typenames[9], eventname[9])
+end
+
+luavm_load()
+""
+!!! ROBLOX USE OF SHUFFLES EXAMPLE:
+
+EXAMPLE USING:
+#pragma once
+
+#define LUAU_COMMA_SEP ,
+#define LUAU_SEMICOLON_SEP ;
+""
+#define LUAU_SHUFFLE3(s, a1, a2, a3) a1 s a3 s a2
+#define LUAU_SHUFFLE4(s, a1, a2, a3, a4) a2 s a3 s a1 s a4 
+#define LUAU_SHUFFLE5(s, a1, a2, a3, a4, a5) a5 s a3 s a2 s a4 s a1    
+#define LUAU_SHUFFLE6(s, a1, a2, a3, a4, a5, a6) a2 s a6 s a4 s a1 s a5 s a3
+#define LUAU_SHUFFLE7(s, a1, a2, a3, a4, a5, a6, a7) a2 s a3 s a4 s a1 s a5 s a6 s a7   
+#define LUAU_SHUFFLE8(s, a1, a2, a3, a4, a5, a6, a7, a8) a1 s a7 s a3 s a8 s a5 s a6 s a4 s a2 
+#define LUAU_SHUFFLE9(s, a1, a2, a3, a4, a5, a6, a7, a8, a9) a7 s a4 s a6 s a9 s a1 s a8 s a2 s a5 s a3 
+""
+short form to getting shuffles:
+Shuffle 3, 5, 7, and 8 are in luaT_typenames and eventname. You can use coroutines to get shuffle 6, then shuffle 4 and 9 are in luavm::load
+easier to learn 
+!!! first examples were just examples not made for roblox but i also made a example using roblox shuffles for internals*
+---------------------------------------------------------------------------------------------------------------------------
+this is protected under the GNU LICENSE ACT
+-------------------------------------------
+!!! DO NOT SHARE PRIVATE RESOURCES!!!
